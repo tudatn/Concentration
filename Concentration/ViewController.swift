@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var flipCountLabel: UILabel!
     
+    @IBOutlet weak var scoreLable: UILabel!
+    
     @IBOutlet var cardButtons: [UIButton]!
     
     @IBAction func touchCard(_ sender: UIButton) {
@@ -29,9 +31,9 @@ class ViewController: UIViewController {
             print("chosen card was not in cardButtons")
         }
     }
-    
     func updateViewFromModel() {
         flipCountLabel.text = "Flips: \(game.flipCount)"
+        scoreLable.text = "Scores: \(game.score)"
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -46,7 +48,7 @@ class ViewController: UIViewController {
     }
     
     var emojiChoices = ["🎃", "👻", "👿", "👺", "💀", "☠️", "👽", "🤡"]
-    
+
     var emoji = [Int:String]()
     
     func emoji(for card: Card) -> String {

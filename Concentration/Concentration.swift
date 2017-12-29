@@ -15,6 +15,10 @@ class Concentration {
     
     var flipCount = 0
     
+    var score = 0
+    
+    var usedCards = [Int]()
+    
     func chooseCard(at index: Int) {
         flipCount += 1
         if !cards[index].isMatched {
@@ -23,6 +27,17 @@ class Concentration {
                 if cards[matchIndex].identifier == cards[index].identifier {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
+                    score += 2
+                }
+                else {
+                    if usedCards.contains(cards[matchIndex].identifier) {
+                        score -= 1
+                    }
+                    else { usedCards += [cards[matchIndex].identifier] }
+                    
+                    if usedCards.contains(cards[index].identifier) {
+                        score -= 1
+                    } else { usedCards += [cards[index].identifier] }
                 }
                 cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = nil
@@ -43,7 +58,9 @@ class Concentration {
             cards[index].isMatched = false
             indexOfOneAndOnlyFaceUpCard = nil
             flipCount = 0
+            score = 0
         }
+        shuffleCards(numberOfCards: cards.count)
     }
     
     init(numberOfPairsOfCards: Int) {
@@ -53,16 +70,20 @@ class Concentration {
             cards += [card, card]
         }
         // Shuffle the cards
-        for _ in 1...numberOfPairsOfCards {
-            let randomFirstIndex = Int(arc4random_uniform(UInt32(totalNumberOfCards)))
-            let randomSecondIndex = Int(arc4random_uniform(UInt32(totalNumberOfCards)))
-            swapCards(between: randomFirstIndex, and: randomSecondIndex)
-        }
+        shuffleCards(numberOfCards: totalNumberOfCards)
     }
     
     func swapCards(between firstIndex: Int, and secondIndex: Int) {
         let temporaryCard = cards[firstIndex]
         cards[firstIndex] = cards[secondIndex]
         cards[secondIndex] = temporaryCard
+    }
+    
+    func shuffleCards(numberOfCards: Int) {
+        for _ in 1...numberOfCards {
+            let randomFirstIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
+            let randomSecondIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
+            swapCards(between: randomFirstIndex, and: randomSecondIndex)
+        }
     }
 }

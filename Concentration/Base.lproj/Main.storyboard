@@ -151,12 +151,20 @@
                                     <action selector="resetGame" destination="BYZ-38-t0r" eventType="touchUpInside" id="nCw-Ak-fFZ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scores: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2u4-51-kfT">
+                                <rect key="frame" x="153" y="599" width="179" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="flipCountLabel" destination="0vf-lJ-NOo" id="qQO-As-HhN"/>
+                        <outlet property="scoreLable" destination="2u4-51-kfT" id="toN-Gh-YB0"/>
                         <outletCollection property="cardButtons" destination="ada-iM-Jhw" collectionClass="NSMutableArray" id="95t-q6-Chi"/>
                         <outletCollection property="cardButtons" destination="foK-Lm-wQI" collectionClass="NSMutableArray" id="5kx-6b-G4P"/>
                         <outletCollection property="cardButtons" destination="BBH-aw-baZ" collectionClass="NSMutableArray" id="ofE-56-WGd"/>
