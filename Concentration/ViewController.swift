@@ -10,12 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     // cannot use property observer for lazy var
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1)/2)
-    
-//    var flipCount = 0 { didSet { flipCountLabel.text = "Flips: \(flipCount)" } }
-    
     
     @IBOutlet weak var flipCountLabel: UILabel!
     
@@ -31,6 +27,7 @@ class ViewController: UIViewController {
             print("chosen card was not in cardButtons")
         }
     }
+    
     func updateViewFromModel() {
         flipCountLabel.text = "Flips: \(game.flipCount)"
         scoreLable.text = "Scores: \(game.score)"
@@ -46,8 +43,20 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    let emojiTheme = [
+        "sports":["⚽️", "🎾", "🎱", "🏉", "🏀", "🏓"],
+        "faces":["😀", "😂", "😝", "😎", "😍", "😩"],
+        "numbers":["㉒", "㉜", "㊹", "⑰", "㊾", "⑱"]
+    ]
     
-    var emojiChoices = ["🎃", "👻", "👿", "👺", "💀", "☠️", "👽", "🤡"]
+//    lazy var gameTheme = Array(emojiTheme.keys)
+    
+    var defaultTheme = "sports"
+    
+    lazy var emojiChoices = emojiTheme[defaultTheme]!
+    
+//    var emojiChoices = ["🎃", "👻", "👿", "👺", "💀", "☠️", "👽", "🤡"]
 
     var emoji = [Int:String]()
     
@@ -60,6 +69,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resetGame() {
+        let gameTheme = Array(emojiTheme.keys)
+        defaultTheme = gameTheme[Int(arc4random_uniform(UInt32(gameTheme.count)))]
+        emoji = [:]
+        emojiChoices = emojiTheme[defaultTheme]!
         game.resetCards()
         updateViewFromModel()
     }

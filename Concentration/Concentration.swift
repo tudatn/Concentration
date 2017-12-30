@@ -56,11 +56,12 @@ class Concentration {
         for index in cards.indices {
             cards[index].isFaceUp = false
             cards[index].isMatched = false
+            usedCards = []
             indexOfOneAndOnlyFaceUpCard = nil
             flipCount = 0
             score = 0
         }
-        shuffleCards(numberOfCards: cards.count)
+        shuffleCards(with: cards.count)
     }
     
     init(numberOfPairsOfCards: Int) {
@@ -70,7 +71,7 @@ class Concentration {
             cards += [card, card]
         }
         // Shuffle the cards
-        shuffleCards(numberOfCards: totalNumberOfCards)
+        shuffleCards(with: totalNumberOfCards)
     }
     
     func swapCards(between firstIndex: Int, and secondIndex: Int) {
@@ -79,7 +80,7 @@ class Concentration {
         cards[secondIndex] = temporaryCard
     }
     
-    func shuffleCards(numberOfCards: Int) {
+    func shuffleCards(with numberOfCards: Int) {
         for _ in 1...numberOfCards {
             let randomFirstIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
             let randomSecondIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
