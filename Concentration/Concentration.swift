@@ -9,9 +9,28 @@
 import Foundation
 
 class Concentration {
-    var cards = [Card]()
+    private(set) var cards = [Card]()
     
-    var indexOfOneAndOnlyFaceUpCard: Int?
+    private var indexOfOneAndOnlyFaceUpCard: Int? {
+        get {
+            var foundIndex: Int?
+            for index in cards.indices {
+                if cards[index].isFaceUp {
+                    if foundIndex == nil {
+                        foundIndex = index
+                    } else {
+                        return nil
+                    }
+                }
+            }
+            return foundIndex
+        }
+        set {
+            for index in cards.indices {
+                cards[index].isFaceUp = (index == newValue)
+            }
+        }
+    }
     
     var flipCount = 0
     
@@ -40,13 +59,7 @@ class Concentration {
                     } else { usedCards += [cards[index].identifier] }
                 }
                 cards[index].isFaceUp = true
-                indexOfOneAndOnlyFaceUpCard = nil
             } else {
-                // either no cards or 2 cards are face up
-                for flipDownIndex in cards.indices {
-                    cards[flipDownIndex].isFaceUp = false
-                }
-                cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = index
             }
         }
@@ -74,17 +87,13 @@ class Concentration {
         shuffleCards(with: totalNumberOfCards)
     }
     
-    func swapCards(between firstIndex: Int, and secondIndex: Int) {
-        let temporaryCard = cards[firstIndex]
-        cards[firstIndex] = cards[secondIndex]
-        cards[secondIndex] = temporaryCard
-    }
-    
     func shuffleCards(with numberOfCards: Int) {
         for _ in 1...numberOfCards {
             let randomFirstIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
             let randomSecondIndex = Int(arc4random_uniform(UInt32(numberOfCards)))
-            swapCards(between: randomFirstIndex, and: randomSecondIndex)
+            let temporaryCard = cards[randomFirstIndex]
+            cards[randomFirstIndex] = cards[randomSecondIndex]
+            cards[randomSecondIndex] = temporaryCard
         }
     }
 }
