@@ -17,7 +17,20 @@ class ViewController: UIViewController {
         return (cardButtons.count + 1) / 2
     }
     
-    @IBOutlet private weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel! {
+        didSet {
+            updateFlipCountLable()
+        }
+    }
+    
+    private func updateFlipCountLable() {
+        let attributes: [NSAttributedStringKey:Any] = [
+            .strokeWidth: 5.0,
+            .strokeColor: #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(game.flipCount)", attributes: attributes)
+        flipCountLabel.attributedText = attributedString
+    }
     
     @IBOutlet private weak var scoreLable: UILabel!
     
@@ -33,7 +46,7 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
-        flipCountLabel.text = "Flips: \(game.flipCount)"
+//        flipCountLabel.text = "Flips: \(game.flipCount)"
         scoreLable.text = "Scores: \(game.score)"
         for index in cardButtons.indices {
             let button = cardButtons[index]
@@ -54,7 +67,8 @@ class ViewController: UIViewController {
         "numbers":["㉒", "㉜", "㊹", "⑰", "㊾", "⑱"],
         "fruits":["🍅", "🍇", "🍒", "🥝", "🍌", "🍍", "🍓", "🍑", "🍈"],
         "letters":["a", "b", "c", "z", "g", "t", "e"],
-        "vehicles":["🚚", "🚑", "🚙", "🚲", "✈️", "🚒", "🚡"]
+        "vehicles":["🚚", "🚑", "🚙", "🚲", "✈️", "🚒", "🚡"],
+        "animals":["🦅", "🐸", "🙈", "😸", "🦓", "🐓", "🐍", "🐉", "🐞", "🕊"]
     ]
     
     private var defaultTheme: String {
@@ -70,14 +84,14 @@ class ViewController: UIViewController {
     
     private lazy var emojiChoices = emojiTheme[defaultTheme]!
 
-    private var emoji = [Int:String]()
+    private var emoji = [Card:String]()
     
     func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
+        if emoji[card] == nil, emojiChoices.count > 0 {
             let randomIndex = emojiChoices.count.arc4random
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+            emoji[card] = emojiChoices.remove(at: randomIndex)
         }
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
     
     @IBAction func resetGame() {

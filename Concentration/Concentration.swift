@@ -13,17 +13,20 @@ class Concentration {
     
     private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            for index in cards.indices {
-                if cards[index].isFaceUp {
-                    if foundIndex == nil {
-                        foundIndex = index
-                    } else {
-                        return nil
-                    }
-                }
-            }
-            return foundIndex
+            return cards.indices.filter { cards[$0].isFaceUp }.oneAndOnly
+//            let faceUpCardIndices = cards.indices.filter { cards[$0].isFaceUp }
+//            return faceUpCardIndices.count == 1 ? faceUpCardIndices.first : nil
+//            var foundIndex: Int?
+//            for index in cards.indices {
+//                if cards[index].isFaceUp {
+//                    if foundIndex == nil {
+//                        foundIndex = index
+//                    } else {
+//                        return nil
+//                    }
+//                }
+//            }
+//            return foundIndex
         }
         set {
             for index in cards.indices {
@@ -36,27 +39,27 @@ class Concentration {
     
     var score = 0
     
-    var usedCards = [Int]()
+    var usedCards = [Card]()
     
     func chooseCard(at index: Int) {
         flipCount += 1
         if !cards[index].isMatched {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
                 // check if cards match
-                if cards[matchIndex].identifier == cards[index].identifier {
+                if cards[matchIndex] == cards[index] {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
                     score += 2
                 }
                 else {
-                    if usedCards.contains(cards[matchIndex].identifier) {
+                    if usedCards.contains(cards[matchIndex]) {
                         score -= 1
                     }
-                    else { usedCards += [cards[matchIndex].identifier] }
+                    else { usedCards += [cards[matchIndex]] }
                     
-                    if usedCards.contains(cards[index].identifier) {
+                    if usedCards.contains(cards[index]) {
                         score -= 1
-                    } else { usedCards += [cards[index].identifier] }
+                    } else { usedCards += [cards[index]] }
                 }
                 cards[index].isFaceUp = true
             } else {
@@ -95,5 +98,11 @@ class Concentration {
             cards[randomFirstIndex] = cards[randomSecondIndex]
             cards[randomSecondIndex] = temporaryCard
         }
+    }
+}
+
+extension Collection {
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
     }
 }
